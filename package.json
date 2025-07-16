@@ -1,9 +1,10 @@
 {
   "name": "rapchure",
-  "version": "1.0.1-snapshot-w2",
+  "version": "1.0.2-snapshot",
   "main": "./dist/exports.js",
   "types": "./dist/exports.d.ts",
   "dependencies": {
+    "chalk": "^5.4.1",
     "ws": "^8.18.3"
   },
   "author": {
@@ -13,9 +14,7 @@
   "devDependencies": {
     "@types/node": "^24.0.13",
     "@types/ws": "^8.18.1",
-    "node-fetch": "^3.3.2",
     "typedoc": "^0.28.7",
-    "typescript": "^5.8.3",
-    "ws": "^8.18.3"
+    "typescript": "^5.8.3"
   }
 }

@@ -1,19 +1,17 @@
 ```ts
 import {
     Bot,
-    Events,
-    Intent
+    Events
 } from "rapchure";
 
-const client = new Bot("token", Intent.combine(
-    Intent.GUILDS,
-    // etc.
-));
-client.on(Events.READY, u => {
-    console.log(u);
+const client = new Bot("token", 524287)
+client.on(Events.MESSAGE_CREATE, m => {
+    if(m.content == "!ping") {
+        m.send("pong!");
+    }
 });
 
 client.run();
 ```
 
-I write docs !))
+You can see docs on git hub pages.
