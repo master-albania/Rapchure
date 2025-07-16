@@ -14,4 +14,4 @@ client.on(Events.MESSAGE_CREATE, m => {
 client.connect();
 ```
 
-You can see docs on git hub pages.
+You can see docs on [github pages](https://master-albania.github.io/Rapchure/).
