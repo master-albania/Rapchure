@@ -11,7 +11,7 @@ client.on(Events.MESSAGE_CREATE, m => {
     }
 });
 
-client.run();
+client.connect();
 ```
 
 You can see docs on git hub pages.
