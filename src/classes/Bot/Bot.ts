@@ -1,20 +1,21 @@
 import * as ws from "ws";
 import { BotBase } from "./BotBase";
 import chalk from "chalk";
-import { Message } from '../Events/Message/Message';
-
-type Listener = (...args: any[]) => void;
+import { EventEmitter } from "events";
+import { BotEvents } from "./BotEvents";
+import { Events } from "../Events/Events";
+import { User } from "../Events/User";
+import { Message } from "../Events/Message";
 
 export class Bot extends BotBase {
     public ws: ws.WebSocket;
-    
-    private listeners: { [event: string]: Listener[] } = {};
-    
+    private events: EventEmitter = new EventEmitter();
+
     constructor(token: string, intents: number) {
         super(token, intents);
 
         this.ws = new ws.WebSocket("wss://gateway.discord.gg/?v=10&encoding=json");
-        
+
         this.ws.on("open", () => {
             console.log(chalk.bold(chalk.green("WebSocket has been started!")));
         });
@@ -24,21 +25,16 @@ export class Bot extends BotBase {
         });
 
         this.ws.on("error", (e) => {
-           console.log(chalk.red(`WebSocket expression: ${e}`)); 
+            console.log(chalk.red(`WebSocket error: ${e}`));
         });
     }
 
     connect() {
         this.ws.on("message", (data) => {
             const payload = JSON.parse(data.toString());
-            const {
-                t,
-                s,
-                d,
-                op
-             } = payload;
+            const { t, d, op } = payload;
 
-             switch(op) {
+            switch(op) {
                 case 10:
                     const interval = d.heartbeat_interval;
                     setInterval(() => {
@@ -56,33 +52,20 @@ export class Bot extends BotBase {
                                 $device: "machine"
                             }
                         }
-                    })); break;
-                
+                    }));
+                    break;
                 case 0:
-                   this.emit(t, d);
-                   break;
-             }
+                    if(t === Events.Ready) {
+                        this.events.emit(Events.Ready, { user: new User(d.user, this.token, this.url) });
+                    } else if(t === Events.MessageCreate) {
+                        this.events.emit(Events.MessageCreate, new Message(d, this.token, this.url));
+                    }
+                    break;
+            }
         });
     }
 
-    public on(event: string, listeners: Listener) {
-        if(!this.listeners[event]) {
-            this.listeners[event] = [];
-        }
-
-        this.listeners[event].push(listeners);
-    }
-    
-    private emit(event: string, rawData: any) {
-        if(!this.listeners[event]) return;
-        let wrapped: any;
-
-        switch(event) {
-            case "MESSAGE_CREATE":
-                wrapped = new Message(rawData, this.token, this.url);
-        }
-        for(const l of this.listeners[event]) {
-            l(wrapped);
-        }
+    public on<K extends keyof BotEvents>(event: K, listerner: (data: BotEvents[K]) => void) {
+        this.events.on(event, listerner);
     }
 }

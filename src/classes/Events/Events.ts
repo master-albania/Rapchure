@@ -1,5 +1,5 @@
 export enum Events {
-    READY = "READY",
-    GUILD_CREATE = "GUILD_CREATE",
-    MESSAGE_CREATE = "MESSAGE_CREATE"
+    Ready = "READY",
+    GuildCreate = "GUILD_CREATE",
+    MessageCreate = "MESSAGE_CREATE"
 }

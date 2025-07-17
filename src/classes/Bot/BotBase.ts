@@ -1,6 +1,4 @@
-import { IBot } from "./IBot";
-
-export class BotBase implements IBot {
+export class BotBase {
     public token: string;
     public intents: number;
 
