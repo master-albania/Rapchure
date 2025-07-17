@@ -7,7 +7,7 @@ import {
 const client = new Bot("token", 524287)
 client.on(Events.MESSAGE_CREATE, m => {
     if(m.content == "!ping") {
-        m.send("pong!");
+        m.channel.send("pong!");
     }
 });
 
