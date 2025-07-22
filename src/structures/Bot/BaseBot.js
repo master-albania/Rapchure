@@ -1,6 +1,7 @@
 const { default: chalk } = require("chalk");
 const WebSocket = require("ws");
-
+const { EventEmitter } = require("events");
+const User = require("../Event/User");
 class BaseBot {
     /**
      * 
@@ -10,6 +11,7 @@ class BaseBot {
         this.intents = intents
         this.ws = new WebSocket("wss://gateway.discord.gg/?v=10&encoding=json");
         this._token = null || "";
+        this._emitter = new EventEmitter();
 
         this.ws.on("open", () => {
             console.log(chalk.bold(chalk.green("Hello, i am websocket!")));
@@ -43,6 +45,11 @@ class BaseBot {
                 case 10:
                     this._ident(d.heartbeat_interval);
                     break;
+                
+                case 0:
+                    if(t == "READY") {
+                        this._emit("ready", new User(d));
+                    }
             }
         });
     }
@@ -67,6 +74,20 @@ class BaseBot {
                 }
             }
         }));
+    }
+
+    /**
+     * 
+     * @param {string} event 
+     * @param {Function} listener 
+     */
+    on(event, listener) {
+        this._emitter.on(event, listener);
+    }
+
+    
+    _emit(event, ...args) {
+        this._emitter.emit(event, ...args);
     }
 }
 
