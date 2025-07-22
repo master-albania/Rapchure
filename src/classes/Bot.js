@@ -1,16 +1,8 @@
-const BaseBot = require("../structures/Bot/BaseBot");
-
+const BaseBot = require("./BaseBot")
 class Bot extends BaseBot {
-    /**
-     * @class
-     * @extends BaseBot
-     * @example
-     * * const bot = new Bot(1234);
-     * * bot.on("ready", (user) => { ... });
-     * @param {number} intents 
-     */
     constructor(intents) {
         super(intents);
+        this.intents = intents;
     }
 }
 
