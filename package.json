@@ -6,8 +6,6 @@
     "type": "git",
     "url": "https://github.com/master-albania/Rapchure"
   },
-  "main": "./dist/exports.js",
-  "types": "./dist/exports.d.ts",
   "dependencies": {
     "chalk": "^5.4.1",
     "ws": "^8.18.3"
@@ -15,11 +13,5 @@
   "author": {
     "name": "albanicteam"
   },
-  "license": "MIT",
-  "devDependencies": {
-    "@types/node": "^24.0.13",
-    "@types/ws": "^8.18.1",
-    "typedoc": "^0.28.7",
-    "typescript": "^5.8.3"
-  }
+  "license": "MIT"
 }
